@@ -1,0 +1,364 @@
+unit Ucadusuario;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Mask, DBCtrls, DB, Grids, DBGrids, Buttons, ADODB,
+  jpeg, ExtCtrls;
+
+type
+  Tfrmcadusuarios = class(TForm)
+    btnNovo: TBitBtn;
+    btnSalvar: TBitBtn;
+    btnAlterar: TBitBtn;
+    btnexcluir: TBitBtn;
+    btncancelar: TBitBtn;
+    btnFechar: TBitBtn;
+    ds_usuario: TDataSource;
+    DBGrid1: TDBGrid;
+    Image1: TImage;
+    ds_funcionario: TDataSource;
+    GroupBox1: TGroupBox;
+    lbl_login: TLabel;
+    lbl_senha: TLabel;
+    lbl_funcionario: TLabel;
+    edtlogin: TDBEdit;
+    edtsenha: TDBEdit;
+    cmb_funcionario: TDBLookupComboBox;
+    btn_cadastra_funcionario: TSpeedButton;
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+    procedure btnexcluirClick(Sender: TObject);
+    procedure btncancelarClick(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure edtloginClick(Sender: TObject);
+    procedure edtloginEnter(Sender: TObject);
+    procedure edtloginKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtloginMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure edtloginExit(Sender: TObject);
+    procedure edtsenhaClick(Sender: TObject);
+    procedure edtsenhaEnter(Sender: TObject);
+    procedure edtsenhaKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtsenhaMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure edtsenhaExit(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure cmb_funcionarioEnter(Sender: TObject);
+    procedure cmb_funcionarioExit(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure btn_cadastra_funcionarioClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+     procedure tratabotao(n:integer);//cuida dos botões que devem ser ativados ou desativados.
+    { Public declarations }
+  end;
+
+var
+  frmcadusuarios: Tfrmcadusuarios;
+
+implementation
+
+uses UDM, Uconsusuario, Ufrmcadfuncionario;
+
+{$R *.dfm}
+
+procedure Tfrmcadusuarios.btnNovoClick(Sender: TObject);
+var
+  i:integer;
+begin
+  DBGrid1.Enabled:=false;
+  btnSalvar.Default:=true;
+  for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).enabled:=true;  //caso seja um dbedit, ele ativa
+  tratabotao(2);
+  cmb_funcionario.SetFocus;
+  dm.tbusuario.Append;  
+end;
+
+procedure Tfrmcadusuarios.btnSalvarClick(Sender: TObject);
+var
+  i:integer;
+  usu:string;
+  senha:string;
+begin
+  usu:=edtlogin.Text;
+  senha:=edtsenha.Text;
+  DBGrid1.Enabled:=true;
+   if(usu ='')then
+      begin
+        if (Application.MessageBox('Informe o nome de usuário por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+          begin
+            edtlogin.SetFocus;
+            DBGrid1.Enabled:=false;
+          end;
+      end
+   else if(senha='')then
+      begin
+        if (Application.MessageBox('Informe senha de usuário por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+          begin
+            edtsenha.SetFocus;
+            DBGrid1.Enabled:=false;
+          end
+      end
+   else
+    begin
+     try
+        dm.tbusuario.post;
+        application.MessageBox('Cadastro efetuado com sucesso!','Concluído',mb_ok);
+        tratabotao(3);
+        for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+           if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+              TDBEdit(Components[i]).Enabled:=false;
+     except
+        dm.tbusuario.Cancel;
+        Application.MessageBox('Problemas ao cadastrar Usuário','Atenção',mb_ok);
+    for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=false;
+   if dm.tbusuario.RecordCount >0 then
+    begin
+      tratabotao(3);
+    end
+   else
+    begin
+      tratabotao(1);
+    end;
+  end;
+ end;
+end;
+procedure Tfrmcadusuarios.btnAlterarClick(Sender: TObject);
+var
+  i:integer;
+begin
+  DBGrid1.Enabled:=false;
+   try
+  for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is Tdbedit)or(Components[i] is TSpeedButton)or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=true;
+  dm.tbusuario.edit;
+  edtlogin.SetFocus;
+  tratabotao(2);
+  except
+  Application.MessageBox('Problemas ao alterar Usuário','Atenção',mb_ok);
+  end;
+end;
+
+procedure Tfrmcadusuarios.btnexcluirClick(Sender: TObject);
+begin
+   if (application.MessageBox('Você tem certeza que deseja excluir este usuário?','Atenção',mb_Iconquestion+Mb_yesno)=idyes)then
+  begin
+    dm.tbusuario.Delete;
+    ShowMessage('Usuário excluído com sucesso!');
+    if (dm.tbusuario.RecordCount=0)then
+        begin
+          tratabotao(1);
+        end
+      else
+        begin
+          tratabotao(3);
+        end;
+  end
+  else
+    dm.tbusuario.Cancel;
+  end;
+procedure Tfrmcadusuarios.tratabotao(n: integer);
+begin
+  case n of
+    1://Quando abre e executa o Form
+      begin
+
+        btnNovo.Enabled:=true;
+        btnSalvar.Enabled:=false;
+        btnCancelar.Enabled:=false;
+        btnAlterar.Enabled:=false;
+        btnExcluir.Enabled:=false;
+        btnFechar.Enabled:=true;
+
+      end;
+    2://Quando clica em Novo
+      begin
+
+        btnNovo.Enabled:=false;
+        btnSalvar.Enabled:=true;
+        btnCancelar.Enabled:=true;
+        btnAlterar.Enabled:=false;
+        btnExcluir.Enabled:=false;
+        btnFechar.Enabled:=false;
+
+      end;
+
+    3://Quando clica em Salvar
+      begin
+
+        btnNovo.Enabled:=true;
+        btnSalvar.Enabled:=false;
+        btnCancelar.Enabled:=false;
+        btnAlterar.Enabled:=true;
+        btnExcluir.Enabled:=true;
+        btnFechar.Enabled:=true;
+
+      end;
+
+  end;
+end;
+
+
+procedure Tfrmcadusuarios.btncancelarClick(Sender: TObject);
+var
+  i:integer;
+begin
+   DBGrid1.Enabled:=true;
+   dm.tbusuario.Cancel;
+  if(dm.tbusuario.recordcount>=1)then
+      begin
+        for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=false;
+        tratabotao(3)
+      end
+    else
+    begin
+      for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=false;
+      tratabotao(1);
+    end;
+end;
+
+procedure Tfrmcadusuarios.btnFecharClick(Sender: TObject);
+begin
+    frmcadusuarios.Close;
+end;
+
+procedure Tfrmcadusuarios.FormActivate(Sender: TObject);
+var
+  i:integer;
+begin
+  dm.tbusuario.Active:=true;
+  if (dm.tbusuario.RecordCount>0)then
+  begin
+  for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=false;
+    tratabotao(3);
+  end
+  else
+  begin
+    Application.MessageBox('Você não tem nenhum registro de usuários','Atenção',mb_ok+MB_ICONEXCLAMATION);
+  for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=false;  //caso seja um dbedit, ele deshabilita
+
+  tratabotao(1);
+  end;
+end;
+
+
+
+procedure Tfrmcadusuarios.edtloginClick(Sender: TObject);
+begin
+  edtlogin.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadusuarios.edtloginEnter(Sender: TObject);
+begin
+  edtlogin.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadusuarios.edtloginKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  edtlogin.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadusuarios.edtloginMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  edtlogin.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadusuarios.edtloginExit(Sender: TObject);
+begin
+  edtlogin.Color:=clWindow;
+end;
+
+procedure Tfrmcadusuarios.edtsenhaClick(Sender: TObject);
+begin
+  edtsenha.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadusuarios.edtsenhaEnter(Sender: TObject);
+begin
+  edtsenha.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadusuarios.edtsenhaKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  edtsenha.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadusuarios.edtsenhaMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  edtsenha.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadusuarios.edtsenhaExit(Sender: TObject);
+begin
+  edtsenha.Color:=clWindow;
+end;
+
+procedure Tfrmcadusuarios.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+  var
+    i:integer;
+begin
+    i:=0;
+  while i <= Screen.FormCount - 1 do { Conta até o último formulário da tela }
+    begin
+      if( Screen.Forms[i] = frmconsusuario ) then
+        begin
+          frmconsusuario.btnconsultar.Click;
+          i := Screen.FormCount;
+        end;
+        Inc(i);
+     end;
+end;
+
+
+procedure Tfrmcadusuarios.cmb_funcionarioEnter(Sender: TObject);
+begin
+  cmb_funcionario.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadusuarios.cmb_funcionarioExit(Sender: TObject);
+begin
+  cmb_funcionario.Color:=clWindow;
+end;
+
+procedure Tfrmcadusuarios.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  With Application
+Do CanClose := MessageBox ( 'Deseja fechar o formulário de cadastro?',
+PChar(Title),
+mb_YesNo Or mb_IconQuestion ) = idYes
+end;
+
+procedure Tfrmcadusuarios.btn_cadastra_funcionarioClick(Sender: TObject);
+begin
+  Application.CreateForm(Tfrmcadfuncionarios,frmcadfuncionarios);
+  frmcadfuncionarios.ShowModal;
+  frmcadfuncionarios.free;
+end;
+
+end.

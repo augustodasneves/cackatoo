@@ -1,0 +1,678 @@
+unit Ufrmcadfuncionario;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, StdCtrls, Mask, DBCtrls, Grids, DBGrids, Buttons, ComCtrls,
+  jpeg, ExtCtrls;
+
+type
+  Tfrmcadfuncionarios = class(TForm)
+    ds_funcionario: TDataSource;
+    btnNovo: TBitBtn;
+    btnSalvar: TBitBtn;
+    btnAlterar: TBitBtn;
+    btnexcluir: TBitBtn;
+    btncancelar: TBitBtn;
+    btnFechar: TBitBtn;
+    DBGrid1: TDBGrid;
+    Image1: TImage;
+    GroupBox1: TGroupBox;
+    lbl_nome_funcionario: TLabel;
+    lbl_data_admissao: TLabel;
+    Label4: TLabel;
+    lbl_ddd: TLabel;
+    lbl_tipo_telefone: TLabel;
+    lbl_sal_bruto: TLabel;
+    lbl_sal_liquido: TLabel;
+    lbl_data_nascimento: TLabel;
+    edtnome: TDBEdit;
+    edt_data_admissao: TDBEdit;
+    edttelefone: TDBEdit;
+    edt_ddd: TDBEdit;
+    edt_sal_bruto: TDBEdit;
+    rgp_sexo: TDBRadioGroup;
+    cmb_tipo_telefone: TDBLookupComboBox;
+    edt_sal_liquido: TDBEdit;
+    edt_data_nascimento: TDBEdit;
+    ds_tipo_telefone: TDataSource;
+    MonthCalendar1: TMonthCalendar;
+    btn_cad_tipo_tel: TSpeedButton;
+    procedure FormActivate(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+    procedure btnexcluirClick(Sender: TObject);
+    procedure btncancelarClick(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+    procedure MonthCalendar1Click(Sender: TObject);
+    procedure edt_data_admissaoMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure edt_data_admissaoKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edt_data_admissaoExit(Sender: TObject);
+    procedure edtnomeClick(Sender: TObject);
+    procedure edtnomeEnter(Sender: TObject);
+    procedure edtnomeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtnomeMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure edtnomeExit(Sender: TObject);
+    procedure edt_data_admissaoClick(Sender: TObject);
+    procedure edt_data_admissaoEnter(Sender: TObject);
+    procedure edt_data_admissaoKeyPress(Sender: TObject; var Key: Char);
+    procedure edt_data_admissaoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edt_data_admissaoMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure edttelefoneClick(Sender: TObject);
+    procedure edttelefoneEnter(Sender: TObject);
+    procedure edttelefoneKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edttelefoneMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure edttelefoneExit(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
+    procedure edttelefoneKeyPress(Sender: TObject; var Key: Char);
+    procedure edt_dddClick(Sender: TObject);
+    procedure edt_dddExit(Sender: TObject);
+    procedure edt_dddEnter(Sender: TObject);
+    procedure combo_tipo_telClick(Sender: TObject);
+    procedure combo_tipo_telEnter(Sender: TObject);
+    procedure combo_tipo_telExit(Sender: TObject);
+    procedure edt_data_nascimentoEnter(Sender: TObject);
+    procedure edt_data_nascimentoExit(Sender: TObject);
+    procedure edt_dddKeyPress(Sender: TObject; var Key: Char);
+    procedure edt_sal_liquidoKeyPress(Sender: TObject; var Key: Char);
+    procedure edt_sal_brutoKeyPress(Sender: TObject; var Key: Char);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure cmb_tipo_telefoneEnter(Sender: TObject);
+    procedure cmb_tipo_telefoneExit(Sender: TObject);
+    procedure edt_sal_brutoEnter(Sender: TObject);
+    procedure edt_sal_brutoExit(Sender: TObject);
+    procedure edt_sal_liquidoEnter(Sender: TObject);
+    procedure edt_sal_liquidoExit(Sender: TObject);
+    procedure btn_cad_tipo_telClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure tratabotao(n:integer);
+    procedure WM_Move(var msg: TWMMove);
+    message WM_MOVE;
+  end;
+
+var
+  frmcadfuncionarios: Tfrmcadfuncionarios;
+  data_ori:string;
+implementation
+
+uses UDM, Ucadastro_funcionario, Uconsultafunc,Ucadusuario,Ucaixa,
+  Ucad_tipo_tel, Ucadproduto;
+
+{$R *.dfm}
+
+procedure Tfrmcadfuncionarios.FormActivate(Sender: TObject);
+var
+  i:integer;
+begin
+  data_ori:=edt_data_admissao.Text;
+  if (dm.tbfuncionarios.RecordCount>0)then
+    begin
+      for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+       if ((Components[i]is Tdbedit)or (Components[i] is TSpeedButton)or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+       TDBEdit(Components[i]).Enabled:=false;
+       tratabotao(3);
+  end
+  else
+    begin
+      Application.MessageBox('Você não tem nenhum registro de funcionários','Atenção',MB_OK+MB_ICONEXCLAMATION);
+      for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+        if ((Components[i]is Tdbedit)or (Components[i] is TSpeedButton) or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox))then  //verifica se os componentes são dbedits
+      TDBEdit(Components[i]).Enabled:=false;  //caso seja um dbedit, ele deshabilita
+      dm.tbfuncionarios.Active:=true;
+      tratabotao(1);
+  end;
+
+    MonthCalendar1.Date:=date;
+end;
+
+
+
+
+
+procedure Tfrmcadfuncionarios.tratabotao(n: integer);
+begin
+
+  case n of
+    1://Quando abre e executa o Form
+      begin
+
+        btnNovo.Enabled:=true;
+        btnSalvar.Enabled:=false;
+        btnCancelar.Enabled:=false;
+        btnAlterar.Enabled:=false;
+        btnExcluir.Enabled:=false;
+        btnFechar.Enabled:=true;
+
+      end;
+    2://Quando clica em Novo
+      begin
+
+        btnNovo.Enabled:=false;
+        btnSalvar.Enabled:=true;
+        btnCancelar.Enabled:=true;
+        btnAlterar.Enabled:=false;
+        btnExcluir.Enabled:=false;
+        btnFechar.Enabled:=false;
+      end;
+
+    3://Quando clica em Salvar
+      begin
+
+        btnNovo.Enabled:=true;
+        btnSalvar.Enabled:=false;
+        btnCancelar.Enabled:=false;
+        btnAlterar.Enabled:=true;
+        btnExcluir.Enabled:=true;
+        btnFechar.Enabled:=true;
+
+      end;
+
+  end;
+
+end;
+
+procedure Tfrmcadfuncionarios.btnNovoClick(Sender: TObject);
+var
+  i:integer;
+begin
+  DBGrid1.Enabled:=false;
+  btnSalvar.Default:=true;
+   for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+  if ((Components[i]is Tdbedit)or (Components[i] is TSpeedButton)or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).enabled:=true;  //caso seja um dbedit, ele ativa
+  tratabotao(2);
+  edtnome.SetFocus;
+  btnsalvar.Default:=True;
+  dm.tbfuncionarios.Append;
+end;
+
+procedure Tfrmcadfuncionarios.btnSalvarClick(Sender: TObject);
+var
+  i:integer;
+  nome:string;
+  telefone:string;
+  data:string;
+  tipo_telefone:string;
+begin
+  DBGrid1.Enabled:=true;
+  nome:=edtnome.text;
+  telefone:=edttelefone.Text;
+  data:=edt_data_admissao.Text;
+  tipo_telefone:=cmb_tipo_telefone.Text;
+    if(nome='')then
+      begin
+        if(Application.MessageBox('Informe o nome do Funcionário','Atenção',MB_OK+MB_ICONERROR)=1) then
+          begin
+            edtnome.SetFocus;
+            dbgrid1.Enabled:=false;
+          end;
+      end
+     else if((data='')or(data=data_ori))then
+      begin
+        if(Application.MessageBox('Informe a data de admissão de contato do funcionário','Atenção',MB_OK+MB_ICONERROR)=1) then
+          begin
+            edttelefone.SetFocus;
+            dbgrid1.Enabled:=false;
+          end;
+      end
+    else if(telefone='')then
+      begin
+        if(Application.MessageBox('Informe o telefone de contato do funcionário','Atenção',MB_OK+MB_ICONERROR)=1) then
+          begin
+            edttelefone.SetFocus;
+            dbgrid1.Enabled:=false;
+          end;
+      end
+    else if((tipo_telefone='')or(tipo_telefone='Selecione o Tipo de Telefone'))then
+      begin
+        if(Application.MessageBox('Informe o tipo de telefone do funcionário','Atenção',MB_OK+MB_ICONERROR)=1) then
+          begin
+            cmb_tipo_telefone.Focused;
+            dbgrid1.Enabled:=false;
+          end;
+      end
+
+    else
+      begin
+  try
+    monthcalendar1.Visible:=false;
+    dm.tbfuncionarios.Post;
+    application.MessageBox('Cadastro efetuado com sucesso!','Concluído',mb_ok);
+    tratabotao(3);
+    for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is Tdbedit)or (Components[i] is TSpeedButton)or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=false;
+  except
+  else
+    begin
+      Application.MessageBox('Problemas ao cadastrar funcionário','Atenção',mb_ok);
+      dm.tbfuncionarios.Cancel;
+      for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+       if ((Components[i]is Tdbedit)or (Components[i] is TSpeedButton)or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+        TDBEdit(Components[i]).Enabled:=false;
+       if dm.tbfuncionarios.RecordCount >0 then
+    begin
+      tratabotao(3);
+    end
+   else
+    begin
+      tratabotao(1);
+    end;
+end;
+end;
+end;
+end;
+procedure Tfrmcadfuncionarios.btnAlterarClick(Sender: TObject);
+var
+  i:integer;
+begin
+  dbgrid1.Enabled:=false;
+   try
+  for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is Tdbedit)or (Components[i] is TSpeedButton)or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=true;
+    edtnome.SetFocus;
+    btnsalvar.Default:=True;
+    monthcalendar1.Visible:=false;
+  dm.tbfuncionarios.edit;
+  tratabotao(2);
+  except
+  Application.MessageBox('Problemas ao alterar funcionário','Atenção',mb_ok);
+  end;
+end;
+
+procedure Tfrmcadfuncionarios.btnexcluirClick(Sender: TObject);
+begin
+  if (application.MessageBox('Você tem certeza que deseja excluir este funcionário?','Atenção',mb_Iconquestion+Mb_yesno)=idyes)then
+    begin
+    try
+      dm.tbfuncionarios.Delete;
+      ShowMessage('Funcionário Excluído com Sucesso!');
+      if (dm.tbfuncionarios.RecordCount=0)then
+        begin
+          tratabotao(1);
+        end
+      else
+        begin
+          tratabotao(3);
+        end;
+    except
+      dm.tbfuncionarios.Cancel;
+  end;
+  end;
+
+end;
+
+procedure Tfrmcadfuncionarios.btncancelarClick(Sender: TObject);
+var
+  i:integer;
+begin
+  DBGrid1.Enabled:=true;
+  MonthCalendar1.Visible:=false;
+  dm.tbfuncionarios.Cancel;
+  if(dm.tbfuncionarios.recordcount>=1)then
+      begin
+        tratabotao(3);
+        for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is Tdbedit)or (Components[i] is TSpeedButton)or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=false;
+      end
+    else
+    begin
+      for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is Tdbedit)or (Components[i] is TSpeedButton)or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=false;
+      tratabotao(1);
+    end;
+end;
+
+procedure Tfrmcadfuncionarios.btnFecharClick(Sender: TObject);
+begin
+    frmcadfuncionarios.Close;
+end;
+
+procedure Tfrmcadfuncionarios.WM_Move(var msg: TWMMove);
+begin
+  if Left < 0 then
+    left:=0;
+   if top < 0then
+    top:=0;
+   if screen.Width-(left+width)< 0 then
+    left:=screen.Width - width;
+   if screen.Height-(top+height) <0 then
+    top:=screen.Height-Height;
+end;
+
+procedure Tfrmcadfuncionarios.MonthCalendar1Click(Sender: TObject);
+begin
+  if(edt_data_admissao.Focused)then
+    begin
+      edt_data_admissao.Text:=DateToStr(MonthCalendar1.Date);
+      MonthCalendar1.Visible:=false;
+    end
+  else if(edt_data_nascimento.Focused)then
+    begin
+      edt_data_nascimento.Text:=DateToStr(MonthCalendar1.Date);
+      MonthCalendar1.Visible:=false;
+    end;
+
+end;
+
+procedure Tfrmcadfuncionarios.edt_data_admissaoMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  MonthCalendar1.Visible:=true;
+end;
+
+procedure Tfrmcadfuncionarios.edt_data_admissaoKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  MonthCalendar1.Visible:=true;
+end;
+
+procedure Tfrmcadfuncionarios.edt_data_admissaoExit(Sender: TObject);
+begin
+  monthcalendar1.Visible:=false;
+   edt_data_admissao.Color:=clWindow;
+end;
+
+procedure Tfrmcadfuncionarios.edtnomeClick(Sender: TObject);
+begin
+  edtnome.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edtnomeEnter(Sender: TObject);
+begin
+  edtnome.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edtnomeKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  edtnome.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edtnomeMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  edtnome.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edtnomeExit(Sender: TObject);
+begin
+  edtnome.Color:=clWindow;
+end;
+
+procedure Tfrmcadfuncionarios.edt_data_admissaoClick(Sender: TObject);
+begin
+  edt_data_admissao.Color:=clMoneyGreen;
+  edt_data_admissao.Text:=DateToStr(MonthCalendar1.Date);
+end;
+
+procedure Tfrmcadfuncionarios.edt_data_admissaoEnter(Sender: TObject);
+begin
+   MonthCalendar1.Date:=Date;
+   MonthCalendar1.Visible:=true;
+   edt_data_admissao.Color:=clMoneyGreen;
+   edt_data_admissao.Text:=DateToStr(MonthCalendar1.Date);
+end;
+
+procedure Tfrmcadfuncionarios.edt_data_admissaoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   edt_data_admissao.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edt_data_admissaoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+   edt_data_admissao.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edt_data_admissaoMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+   edt_data_admissao.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edttelefoneClick(Sender: TObject);
+begin
+   edttelefone.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edttelefoneEnter(Sender: TObject);
+begin
+  edttelefone.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edttelefoneKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  edttelefone.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edttelefoneMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  edttelefone.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edttelefoneExit(Sender: TObject);
+begin
+  edttelefone.Color:=clWindow;
+end;
+
+procedure Tfrmcadfuncionarios.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+  var
+  i:integer;
+begin
+   i:=0;
+  while i <= Screen.FormCount - 1 do { Conta até o último formulário da tela }
+    begin
+      if( Screen.Forms[i] = frmconsfunc ) then
+        begin
+          frmconsfunc.btnconsultar.Click;
+          i := Screen.FormCount;
+        end;
+        Inc(i);
+     end;
+  while i <= Screen.FormCount - 1 do { Conta até o último formulário da tela }
+    begin
+      if( Screen.Forms[i] = frmcadusuarios ) then
+        begin
+          frmcadusuarios.cmb_funcionario.Refresh;
+          i := Screen.FormCount;
+        end;
+        Inc(i);
+     end;
+  while i <= Screen.FormCount - 1 do { Conta até o último formulário da tela }
+    begin
+      if( Screen.Forms[i] = frmcaixa) then
+        begin
+          frmcaixa.cmb_funcionario.Refresh;
+          i := Screen.FormCount;
+        end;
+        Inc(i);
+     end;
+     while i <= Screen.FormCount - 1 do { Conta até o último formulário da tela }
+    begin
+      if( Screen.Forms[i] = frmcadproduto) then
+        begin
+          frmcadproduto.cmb_funcionario.Refresh;
+          i := Screen.FormCount;
+        end;
+        Inc(i);
+     end;
+      while i <= Screen.FormCount - 1 do { Conta até o último formulário da tela }
+    begin
+      if( Screen.Forms[i] = frmretirada) then
+        begin
+          frmretirada.cmb_funcionario.Refresh;
+          i := Screen.FormCount;
+        end;
+        Inc(i);
+     end;
+end;
+
+procedure Tfrmcadfuncionarios.FormDestroy(Sender: TObject);
+var
+i:integer;
+begin
+     i:=0;
+  while i <= Screen.FormCount - 1 do { Conta até o último formulário da tela }
+    begin
+      if( Screen.Forms[i] = frmconsfunc ) then
+        begin
+          frmconsfunc.btnconsultar.Click;
+          i := Screen.FormCount;
+        end;
+        Inc(i);
+     end;
+end;
+
+procedure Tfrmcadfuncionarios.edttelefoneKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if not (Key in ['0'..'9', #8, #13]) then
+    begin
+      Key := #0;
+      ShowMessage('Este Campo aceita Somente Números');
+    end;
+end;
+
+procedure Tfrmcadfuncionarios.edt_dddClick(Sender: TObject);
+begin
+  edt_ddd.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edt_dddExit(Sender: TObject);
+begin
+  edt_ddd.Color:=clwindow;
+end;
+
+procedure Tfrmcadfuncionarios.edt_dddEnter(Sender: TObject);
+begin
+  edt_ddd.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.combo_tipo_telClick(Sender: TObject);
+begin
+  cmb_tipo_telefone.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.combo_tipo_telEnter(Sender: TObject);
+begin
+  cmb_tipo_telefone.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.combo_tipo_telExit(Sender: TObject);
+begin
+  cmb_tipo_telefone.Color:=clWindow;
+end;
+
+procedure Tfrmcadfuncionarios.edt_data_nascimentoEnter(Sender: TObject);
+begin
+   MonthCalendar1.Date:=Date;
+   MonthCalendar1.Visible:=true;
+  edt_data_nascimento.Text:=DateToStr(MonthCalendar1.Date);
+  edt_data_nascimento.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edt_data_nascimentoExit(Sender: TObject);
+begin
+  MonthCalendar1.Visible:=false;
+  edt_data_nascimento.Color:=clWindow;
+end;
+
+procedure Tfrmcadfuncionarios.edt_dddKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if not (Key in ['0'..'9', #8, #13]) then
+    begin
+      Key := #0;
+      ShowMessage('Este Campo aceita Somente Números');
+    end;
+end;
+
+procedure Tfrmcadfuncionarios.edt_sal_liquidoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+ if not (Key in ['0'..'9', #8, #13]) then
+    begin
+      Key := #0;
+      ShowMessage('Este Campo aceita Somente Números');
+    end;
+end;
+
+procedure Tfrmcadfuncionarios.edt_sal_brutoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+if not (Key in ['0'..'9', #8, #13]) then
+    begin
+      Key := #0;
+      ShowMessage('Este Campo aceita Somente Números');
+    end;
+end;
+
+procedure Tfrmcadfuncionarios.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  With Application
+Do CanClose := MessageBox ( 'Deseja fechar o formulário de cadastro?',
+PChar(Title),
+mb_YesNo Or mb_IconQuestion ) = idYes
+end;
+
+procedure Tfrmcadfuncionarios.cmb_tipo_telefoneEnter(Sender: TObject);
+begin
+  cmb_tipo_telefone.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.cmb_tipo_telefoneExit(Sender: TObject);
+begin
+  cmb_tipo_telefone.Color:=clWindow;
+end;
+
+procedure Tfrmcadfuncionarios.edt_sal_brutoEnter(Sender: TObject);
+begin
+  edt_sal_bruto.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edt_sal_brutoExit(Sender: TObject);
+begin
+  edt_sal_bruto.Color:=clWindow;
+end;
+
+procedure Tfrmcadfuncionarios.edt_sal_liquidoEnter(Sender: TObject);
+begin
+  edt_sal_liquido.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfuncionarios.edt_sal_liquidoExit(Sender: TObject);
+begin
+  edt_sal_liquido.Color:=clWindow;
+end;
+
+procedure Tfrmcadfuncionarios.btn_cad_tipo_telClick(Sender: TObject);
+begin
+  Application.CreateForm(Tfrmcad_tipo_tel,frmcad_tipo_tel);
+  frmcad_tipo_tel.showmodal;
+  frmcad_tipo_tel.free;
+end;
+
+end.

@@ -1,0 +1,761 @@
+unit Ucadfornecedor;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, StdCtrls, Buttons, Grids, DBGrids, DBCtrls, Mask, jpeg,
+  ExtCtrls;
+
+type
+  Tfrmcadfornecedores = class(TForm)
+    DBGrid1: TDBGrid;
+    btnnovo: TBitBtn;
+    btnsalvar: TBitBtn;
+    btnalterar: TBitBtn;
+    btnexcluir: TBitBtn;
+    btnfechar: TBitBtn;
+    btncancelar: TBitBtn;
+    Image1: TImage;
+    ds_fornecedor: TDataSource;
+    ds_bairro: TDataSource;
+    ds_tipo_telefone: TDataSource;
+    GroupBox1: TGroupBox;
+    lbl_cnpj: TLabel;
+    lbl_nome: TLabel;
+    lbl_telefone: TLabel;
+    lbl_email: TLabel;
+    lbl_endereco: TLabel;
+    lbl_bairro: TLabel;
+    lbl_numero: TLabel;
+    lbl_tipo_telefone: TLabel;
+    lbl_ddd: TLabel;
+    lbl_fax: TLabel;
+    lbl_razao_social: TLabel;
+    Label1: TLabel;
+    edtcnpj: TDBEdit;
+    edtemail: TDBEdit;
+    edttelefone: TDBEdit;
+    edtendereco: TDBEdit;
+    edtnumero: TDBEdit;
+    edtddd: TDBEdit;
+    edtfax: TDBEdit;
+    edt_razao_social: TDBEdit;
+    chk_ativo: TDBCheckBox;
+    cmb_bairro: TDBLookupComboBox;
+    cmb_tipo_telefone: TDBLookupComboBox;
+    edtnome: TDBEdit;
+    edt_inscricao: TDBEdit;
+    btn_cad_tipo_tel: TSpeedButton;
+    btn_cad_bairro: TSpeedButton;
+    procedure btnnovoClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure btnsalvarClick(Sender: TObject);
+    procedure btnfecharClick(Sender: TObject);
+    procedure btnalterarClick(Sender: TObject);
+    procedure btnexcluirClick(Sender: TObject);
+    procedure btncancelarClick(Sender: TObject);
+    procedure FormClick(Sender: TObject);
+    procedure edtcnpjClick(Sender: TObject);
+    procedure edtcnpjEnter(Sender: TObject);
+    procedure edtcnpjKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtcnpjMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure edtcnpjExit(Sender: TObject);
+    procedure edttelefoneClick(Sender: TObject);
+    procedure edttelefoneEnter(Sender: TObject);
+    procedure edttelefoneKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edttelefoneMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure edttelefoneExit(Sender: TObject);
+    procedure edtemailClick(Sender: TObject);
+    procedure edtemailEnter(Sender: TObject);
+    procedure edtemailKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtemailMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure edtemailExit(Sender: TObject);
+    procedure edtenderecoClick(Sender: TObject);
+    procedure edtenderecoEnter(Sender: TObject);
+    procedure edtenderecoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtenderecoMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure edtenderecoExit(Sender: TObject);
+    procedure edtnumeroClick(Sender: TObject);
+    procedure edtnumeroEnter(Sender: TObject);
+    procedure edtnumeroKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtnumeroMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure edtnumeroExit(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
+    procedure edttelefoneKeyPress(Sender: TObject; var Key: Char);
+    procedure edtnumeroKeyPress(Sender: TObject; var Key: Char);
+    procedure edtcnpjKeyPress(Sender: TObject; var Key: Char);
+    procedure edtdddClick(Sender: TObject);
+    procedure edtdddEnter(Sender: TObject);
+    procedure edtdddExit(Sender: TObject);
+    procedure edtfaxClick(Sender: TObject);
+    procedure edtfaxEnter(Sender: TObject);
+    procedure edtfaxExit(Sender: TObject);
+    procedure edtdddKeyPress(Sender: TObject; var Key: Char);
+    procedure edtfaxKeyPress(Sender: TObject; var Key: Char);
+    procedure edtnomeEnter(Sender: TObject);
+    procedure edtnomeExit(Sender: TObject);
+    procedure edt_razao_socialEnter(Sender: TObject);
+    procedure cmb_tipo_telefoneEnter(Sender: TObject);
+    procedure edt_razao_socialExit(Sender: TObject);
+    procedure cmb_tipo_telefoneExit(Sender: TObject);
+    procedure cmb_bairroEnter(Sender: TObject);
+    procedure cmb_bairroExit(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure edt_inscricaoEnter(Sender: TObject);
+    procedure edt_inscricaoExit(Sender: TObject);
+    procedure btn_cad_tipo_telClick(Sender: TObject);
+    procedure btn_cad_bairroClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    procedure tratabotao(n:integer);
+    procedure WM_Move(var msg: TWMMove);
+    message WM_MOVE;
+    { Public declarations }
+  end;
+
+var
+  frmcadfornecedores: Tfrmcadfornecedores;
+
+implementation
+
+uses Ucackatoo, UDM, Uconsfornecedor, Ucad_tipo_tel, Ucadbairro,
+  Ucadproduto;
+
+{$R *.dfm}
+
+procedure Tfrmcadfornecedores.btnnovoClick(Sender: TObject);
+var
+  i:integer;
+begin
+    DBGrid1.Enabled:=false;
+    btnsalvar.Default:=true;
+    for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton) or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=true;  //caso seja um dbedit, ele ativa
+  tratabotao(2);
+  dm.tbfornecedor.Append;
+  btnsalvar.Default:=True;
+end;
+
+
+
+procedure Tfrmcadfornecedores.tratabotao(n: integer);
+begin
+
+  case n of
+    1://Quando abre e executa o Form
+      begin
+
+        btnNovo.Enabled:=true;
+        btnSalvar.Enabled:=false;
+        btnCancelar.Enabled:=false;
+        btnAlterar.Enabled:=false;
+        btnExcluir.Enabled:=false;
+        btnFechar.Enabled:=true;
+
+      end;
+    2://Quando clica em Novo
+      begin
+
+        btnNovo.Enabled:=false;
+        btnSalvar.Enabled:=true;
+        btnCancelar.Enabled:=true;
+        btnAlterar.Enabled:=false;
+        btnExcluir.Enabled:=false;
+        btnFechar.Enabled:=false;
+
+      end;
+
+    3://Quando clica em Salvar
+      begin
+        btnNovo.Enabled:=true;
+        btnSalvar.Enabled:=false;
+        btnCancelar.Enabled:=false;
+        btnAlterar.Enabled:=true;
+        btnExcluir.Enabled:=true;
+        btnFechar.Enabled:=true;
+
+      end;
+
+  end;
+
+end;
+
+procedure Tfrmcadfornecedores.FormActivate(Sender: TObject);
+var
+  i:integer;
+begin
+  if (dm.tbfornecedor.RecordCount>0)then
+    begin
+      for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+       if ((Components[i]is Tdbedit)or(Components[i] is TSpeedButton)or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox)or(Components[i] is TDBCheckBox)or(Components[i] is TDBLookupComboBox))then  //verifica se os componentes são dbedits
+       TDBEdit(Components[i]).Enabled:=false;
+       tratabotao(3);
+      end
+  else
+    begin
+      Application.MessageBox('Não há nenhum registro de fornecedores','Atenção',mb_ok);
+      for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+        if ((Components[i]is Tdbedit)or(Components[i] is TSpeedButton)or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox)or(Components[i] is TDBCheckBox)or(Components[i] is TDBLookupComboBox))then  //verifica se os componentes são dbedits
+      TDBEdit(Components[i]).Enabled:=false;  //caso seja um dbedit, ele deshabilita
+      dm.tbfornecedor.Active:=true;
+      tratabotao(1);
+  end;
+end;
+
+
+procedure Tfrmcadfornecedores.btnsalvarClick(Sender: TObject);
+var
+  i:integer;
+  nome:string;
+  telefone:string;
+  email:string;
+  endereco:string;
+  bairro:string;
+  cnpj:string;
+  num:string;
+  fax:string;
+begin
+  DBGrid1.Enabled:=true;
+  nome:=edtnome.Text;
+  telefone:=edttelefone.Text;
+  email:=edtemail.Text;
+  endereco:=edtendereco.Text;
+  bairro:=cmb_bairro.Text;
+  cnpj:=edtcnpj.Text;
+  num:=edtnumero.Text;
+  fax:=edtfax.Text;
+  if(nome='')then
+      begin
+        if(Application.MessageBox('Informe o Nome do Fornecedor!','Atenção',MB_OK+MB_ICONERROR)=1)then
+          begin
+            DBGrid1.Enabled:=false;
+          end;
+      end
+   else if(cnpj='')then
+       begin
+         if(Application.MessageBox('Informe o cnpj do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
+           begin
+             edtcnpj.setfocus;
+             DBGrid1.Enabled:=false;
+           end;
+       end
+    else if(telefone='')then
+      begin
+        if(Application.MessageBox('Informe o telefone do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
+          begin
+            edttelefone.setfocus;
+            DBGrid1.Enabled:=false;
+          end;
+        end
+     else if(email='')then
+       begin
+         if(Application.MessageBox('Informe o email do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
+           begin
+             edtemail.setfocus;
+             DBGrid1.Enabled:=false;
+           end;
+       end
+      else if(endereco='')then
+       begin
+         if(Application.MessageBox('Informe o endereço do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
+           begin
+             edtendereco.setfocus;
+             DBGrid1.Enabled:=false;
+           end;
+       end
+       else if(num='')then
+       begin
+         if(Application.MessageBox('Informe o número do endereço do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
+           begin
+             edtnumero.setfocus;
+             DBGrid1.Enabled:=false;
+           end;
+       end
+
+        else if(bairro='')then
+       begin
+         if(Application.MessageBox('Informe o bairro do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
+           begin
+             cmb_bairro.setfocus;
+             DBGrid1.Enabled:=false;
+           end;
+         end
+       else if(Fax='')then
+       begin
+         if(Application.MessageBox('Informe o fax do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
+           begin
+             edtfax.setfocus;
+             DBGrid1.Enabled:=false;
+           end;
+       end
+    else
+      begin
+   try
+    dm.tbfornecedor.Post;
+    application.MessageBox('Cadastro efetuado com sucesso!','Concluído',mb_ok);
+    tratabotao(3);
+    for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBCheckBox)or(Components[i] is TDBLookUpComboBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=false;
+  except
+    Application.MessageBox('Problemas ao cadastrar fornecedor!','Atenção',mb_ok);
+    dm.tbfornecedor.Cancel;
+    for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBCheckBox)or(Components[i] is TDBLookUpComboBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=false;
+
+   if dm.tbfornecedor.RecordCount >0 then
+    begin
+      tratabotao(3);
+    end
+   else
+    begin
+      tratabotao(1);
+    end;
+   end;
+  end;
+end;
+
+procedure Tfrmcadfornecedores.btnfecharClick(Sender: TObject);
+begin
+    frmcadfornecedores.Close;
+end;
+
+procedure Tfrmcadfornecedores.btnalterarClick(Sender: TObject);
+var
+i:integer;
+begin
+  dbgrid1.Enabled:=false;
+   try
+  for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+   if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+    TDBEdit(Components[i]).Enabled:=true;
+  dm.tbfornecedor.edit;
+  btnsalvar.Default:=True;
+  tratabotao(2);
+  except
+  Application.MessageBox('Problemas ao alterar funcionário','Atenção',mb_ok);
+  end;
+end;
+
+procedure Tfrmcadfornecedores.btnexcluirClick(Sender: TObject);
+begin
+if (application.MessageBox('Você tem certeza que deseja excluir este produto?','Atenção',mb_Iconquestion+Mb_yesno)=idyes)then
+    begin
+    try
+      dm.tbfornecedor.Delete;
+      ShowMessage('Fornecedor Excluído com Sucesso!');
+      if (dm.tbfornecedor.RecordCount=0)then
+        begin
+          tratabotao(1);
+        end
+      else
+        begin
+          tratabotao(3);
+        end;
+    except
+    dm.tbfornecedor.Cancel;
+  end;
+end;
+end;
+
+procedure Tfrmcadfornecedores.btncancelarClick(Sender: TObject);
+var
+  i:integer;
+begin
+    DBGrid1.Enabled:=true;
+    dm.tbfornecedor.Cancel;
+    if(dm.tbfornecedor.recordcount>=1)then
+      begin
+        tratabotao(3);
+        for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+          if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+            begin
+              TDBEdit(Components[i]).Enabled:=false;
+            end
+    end
+    else
+      begin
+        tratabotao(1);
+        for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
+          if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
+            begin
+              TDBEdit(Components[i]).Enabled:=false;
+
+            end;
+    end;
+end;
+
+
+procedure Tfrmcadfornecedores.WM_Move(var msg: TWMMove);
+begin
+  if Left < 0 then
+    left:=0;
+   if top < 0then
+    top:=0;
+   if screen.Width-(left+width)< 0 then
+    left:=screen.Width - width;
+   if screen.Height-(top+height) <0 then
+    top:=screen.Height-Height;
+end;
+
+procedure Tfrmcadfornecedores.FormClick(Sender: TObject);
+begin
+  frmcadfornecedores.WindowState:=wsMaximized;
+end;
+
+procedure Tfrmcadfornecedores.edtcnpjClick(Sender: TObject);
+begin
+  edtcnpj.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtcnpjEnter(Sender: TObject);
+begin
+  edtcnpj.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtcnpjKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  edtcnpj.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtcnpjMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  edtcnpj.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtcnpjExit(Sender: TObject);
+begin
+  edtcnpj.Color:=clWindow;
+end;
+
+procedure Tfrmcadfornecedores.edttelefoneClick(Sender: TObject);
+begin
+  edttelefone.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edttelefoneEnter(Sender: TObject);
+begin
+  edttelefone.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edttelefoneKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  edttelefone.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edttelefoneMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  edttelefone.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edttelefoneExit(Sender: TObject);
+begin
+  edttelefone.Color:=clWindow;
+end;
+
+procedure Tfrmcadfornecedores.edtemailClick(Sender: TObject);
+begin
+  edtemail.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtemailEnter(Sender: TObject);
+begin
+  edtemail.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtemailKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  edtemail.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtemailMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  edtemail.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtemailExit(Sender: TObject);
+begin
+  edtemail.Color:=clWindow;
+end;
+
+procedure Tfrmcadfornecedores.edtenderecoClick(Sender: TObject);
+begin
+  edtendereco.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtenderecoEnter(Sender: TObject);
+begin
+  edtendereco.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtenderecoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  edtendereco.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtenderecoMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  edtendereco.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtenderecoExit(Sender: TObject);
+begin
+  edtendereco.Color:=clWindow;
+end;
+
+procedure Tfrmcadfornecedores.edtnumeroClick(Sender: TObject);
+begin
+  edtnumero.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtnumeroEnter(Sender: TObject);
+begin
+  edtnumero.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtnumeroKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  edtnumero.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtnumeroMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  edtnumero.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtnumeroExit(Sender: TObject);
+begin
+  edtnumero.Color:=clWindow;
+end;
+
+
+
+procedure Tfrmcadfornecedores.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+  var
+  i:integer;
+begin
+   i:=0;
+  while i <= Screen.FormCount - 1 do { Conta até o último formulário da tela }
+    begin
+      if( Screen.Forms[i] = frmconsfornecedor ) then
+        begin
+          frmconsfornecedor.btnconsultar.Click;
+          i := Screen.FormCount;
+        end;
+        Inc(i);
+     end;
+
+  while i <= Screen.FormCount - 1 do { Conta até o último formulário da tela }
+    begin
+      if( Screen.Forms[i] = frmcadproduto) then
+        begin
+          frmcadproduto.cmb_fornecedor.Refresh;
+          i := Screen.FormCount;
+        end;
+        Inc(i);
+     end;
+end;
+
+procedure Tfrmcadfornecedores.FormDestroy(Sender: TObject);
+var
+i:integer;
+begin
+   i:=0;
+  while i <= Screen.FormCount - 1 do { Conta até o último formulário da tela }
+    begin
+      if( Screen.Forms[i] = frmconsfornecedor ) then
+        begin
+          frmconsfornecedor.btnconsultar.Click;
+          i := Screen.FormCount;
+        end;
+        Inc(i);
+     end;
+end;
+
+procedure Tfrmcadfornecedores.edttelefoneKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+ if not (Key in ['0'..'9', #8, #13]) then
+    begin
+      Key := #0;
+      ShowMessage('Este Campo aceita Somente Números');
+    end;
+end;
+
+procedure Tfrmcadfornecedores.edtnumeroKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+ if not (Key in ['0'..'9', #8, #13]) then
+    begin
+      Key := #0;
+      ShowMessage('Este Campo aceita Somente Números');
+    end;
+end;
+
+procedure Tfrmcadfornecedores.edtcnpjKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if not (Key in ['0'..'9', #8, #13]) then
+    begin
+      Key := #0;
+      ShowMessage('Este Campo aceita Somente Números');
+    end;
+end;
+
+procedure Tfrmcadfornecedores.edtdddClick(Sender: TObject);
+begin
+  edtddd.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtdddEnter(Sender: TObject);
+begin
+  edtddd.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtdddExit(Sender: TObject);
+begin
+  edtddd.Color:=clWindow;
+end;
+
+
+procedure Tfrmcadfornecedores.edtfaxClick(Sender: TObject);
+begin
+  edtfax.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtfaxEnter(Sender: TObject);
+begin
+  edtfax.Color:=clMoneyGreen; 
+end;
+
+procedure Tfrmcadfornecedores.edtfaxExit(Sender: TObject);
+begin
+  edtfax.Color:=clWindow;
+end;
+
+procedure Tfrmcadfornecedores.edtdddKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if not (Key in ['0'..'9', #8, #13]) then
+    begin
+      Key := #0;
+      ShowMessage('Este Campo aceita Somente Números');
+    end;
+end;
+
+procedure Tfrmcadfornecedores.edtfaxKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+ if not (Key in ['0'..'9', #8, #13]) then
+    begin
+      Key := #0;
+      ShowMessage('Este Campo aceita Somente Números');
+    end;
+end;
+
+
+
+procedure Tfrmcadfornecedores.edtnomeEnter(Sender: TObject);
+begin
+  edtnome.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edtnomeExit(Sender: TObject);
+begin
+  edtnome.Color:=clWindow;
+end;
+
+procedure Tfrmcadfornecedores.edt_razao_socialEnter(Sender: TObject);
+begin
+  edt_razao_social.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.cmb_tipo_telefoneEnter(Sender: TObject);
+begin
+  cmb_tipo_telefone.Color:=clMoneyGreen;
+end;
+
+
+
+procedure Tfrmcadfornecedores.edt_razao_socialExit(Sender: TObject);
+begin
+  edt_razao_social.Color:=clWindow;
+end;
+
+procedure Tfrmcadfornecedores.cmb_tipo_telefoneExit(Sender: TObject);
+begin
+  cmb_tipo_telefone.Color:=clWindow;
+end;
+
+procedure Tfrmcadfornecedores.cmb_bairroEnter(Sender: TObject);
+begin
+  cmb_bairro.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.cmb_bairroExit(Sender: TObject);
+begin
+  cmb_bairro.Color:=clWindow;
+end;
+
+procedure Tfrmcadfornecedores.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  With Application
+Do CanClose := MessageBox ( 'Deseja fechar o formulário de cadastro?',
+PChar(Title),
+mb_YesNo Or mb_IconQuestion ) = idYes
+end;
+
+
+
+procedure Tfrmcadfornecedores.edt_inscricaoEnter(Sender: TObject);
+begin
+  edt_inscricao.Color:=clMoneyGreen;
+end;
+
+procedure Tfrmcadfornecedores.edt_inscricaoExit(Sender: TObject);
+begin
+  edt_inscricao.Color:=clWindow;
+end;
+
+procedure Tfrmcadfornecedores.btn_cad_tipo_telClick(Sender: TObject);
+begin
+  Application.CreateForm(Tfrmcad_tipo_tel,frmcad_tipo_tel);
+  frmcad_tipo_tel.showmodal;
+  frmcad_tipo_tel.free;
+end;
+
+procedure Tfrmcadfornecedores.btn_cad_bairroClick(Sender: TObject);
+begin
+  Application.CreateForm(Tfrmcadbairro, frmcadbairro);
+  frmcadbairro.ShowModal;
+  frmcadbairro.Free;
+end;
+
+end.
