@@ -1,8 +1,8 @@
 object frmcadproduto: Tfrmcadproduto
-  Left = 253
-  Top = 116
+  Left = 473
+  Top = -19
   Width = 876
-  Height = 773
+  Height = 666
   Hint = 'Selecione a Data de Lan'#231'amento no Calend'#225'rio'
   Caption = 'Agropecu'#225'ria e Ferragem Lima Neves - Cadastro de Produtos'
   Color = clBtnFace
@@ -438,98 +438,84 @@ object frmcadproduto: Tfrmcadproduto
         Expanded = False
         FieldName = 'nome_prod'
         Title.Caption = 'Nome'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'marca'
         Title.Caption = 'Marca'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'valor_venda'
         Title.Caption = 'Valor(Venda)'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'qtd'
         Title.Caption = 'QTD'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'estoque_minimo'
         Title.Caption = 'Estoque M'#237'nimo'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'fornecedor_id_fornecedor'
         Title.Caption = 'Fornecedor'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'id_funcionario'
         Title.Caption = 'Funcion'#225'rio'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'id_categoria'
         Title.Caption = 'Categoria'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'data_modificacao'
         Title.Caption = 'Data Modifica'#231#227'o'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'valor_forn'
         Title.Caption = 'Valor(Compra)'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'uni_medida'
         Title.Caption = 'Unidade de Medida'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'observacao'
         Title.Caption = 'Observa'#231#227'o'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'perecivel'
         Title.Caption = 'Perec'#237'vel'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'prazo_validade'
         Title.Caption = 'Prazo de Validade'
-        Width = 64
         Visible = True
       end
       item
@@ -1447,6 +1433,7 @@ object frmcadproduto: Tfrmcadproduto
       Width = 145
       Height = 21
       Hint = 'Selecione a unidade de medida'
+      Style = csDropDownList
       CharCase = ecUpperCase
       DataField = 'uni_medida'
       DataSource = ds_produto
@@ -1550,7 +1537,6 @@ object frmcadproduto: Tfrmcadproduto
       Hint = 'Selecione o Fornecedor'
       DataField = 'fornecedor_id_fornecedor'
       DataSource = ds_produto
-      Enabled = False
       KeyField = 'id_fornecedor'
       ListField = 'nome_fantasia'
       ListSource = ds_fornecedor
@@ -1568,7 +1554,6 @@ object frmcadproduto: Tfrmcadproduto
       Hint = 'Selecione a Categoria'
       DataField = 'id_categoria'
       DataSource = ds_produto
-      Enabled = False
       KeyField = 'id_categoria'
       ListField = 'categoria'
       ListSource = ds_categoria
@@ -1610,7 +1595,7 @@ object frmcadproduto: Tfrmcadproduto
       Hint = 'Selecione o Prazo de Validade'
       HelpType = htKeyword
       CalColors.TitleBackColor = clOlive
-      Date = 40095.432139722220000000
+      Date = 40095.381080671300000000
       ParentShowHint = False
       ShowHint = True
       TabOrder = 14
@@ -1637,17 +1622,17 @@ object frmcadproduto: Tfrmcadproduto
   object ds_categoria: TDataSource
     DataSet = DM.tbcategoria
     Left = 144
-    Top = 304
+    Top = 296
   end
   object ds_fornecedor: TDataSource
     DataSet = DM.tbfornecedor
     Left = 144
-    Top = 256
+    Top = 248
   end
   object ds_funcionarios: TDataSource
     DataSet = DM.tbfuncionarios
-    Left = 152
-    Top = 8
+    Left = 144
+    Top = 16
   end
   object DataSource5: TDataSource
     Left = 344

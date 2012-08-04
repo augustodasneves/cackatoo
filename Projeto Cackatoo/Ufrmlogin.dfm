@@ -1,7 +1,7 @@
 object frmlogin: Tfrmlogin
-  Left = 317
-  Top = 280
-  Width = 669
+  Left = 311
+  Top = 234
+  Width = 640
   Height = 324
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Agropecu'#225'ria e Ferragem Lima Neves - Login'
@@ -63,7 +63,7 @@ object frmlogin: Tfrmlogin
   PixelsPerInch = 96
   TextHeight = 16
   object Image1: TImage
-    Left = 120
+    Left = 104
     Top = 0
     Width = 451
     Height = 105
@@ -818,7 +818,7 @@ object frmlogin: Tfrmlogin
   object StatusBar: TStatusBar
     Left = 0
     Top = 268
-    Width = 661
+    Width = 632
     Height = 22
     Panels = <
       item
@@ -860,12 +860,12 @@ object frmlogin: Tfrmlogin
     Parameters = <>
     SQL.Strings = (
       'select*from usuarios;')
-    Left = 192
+    Left = 96
     Top = 168
   end
   object DataSource1: TDataSource
     DataSet = DM.tbusuario
-    Left = 160
+    Left = 128
     Top = 168
   end
   object gera_log: TADOQuery
@@ -887,13 +887,13 @@ object frmlogin: Tfrmlogin
   object IP: TIdIPWatch
     Active = True
     HistoryFilename = 'iphist.dat'
-    Left = 120
-    Top = 216
+    Left = 96
+    Top = 200
   end
   object Timer1: TTimer
     Interval = 1
     OnTimer = Timer1Timer
-    Left = 160
-    Top = 224
+    Left = 128
+    Top = 200
   end
 end

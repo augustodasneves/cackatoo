@@ -1,10 +1,10 @@
 object frmcadfuncionarios: Tfrmcadfuncionarios
   Left = 184
-  Top = 178
+  Top = 0
   AutoSize = True
   BorderStyle = bsSingle
   Caption = 'Agropecu'#225'ria e Ferragem Lima Neves - Cadastro de Funcion'#225'rios'
-  ClientHeight = 737
+  ClientHeight = 674
   ClientWidth = 993
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -1448,7 +1448,7 @@ object frmcadfuncionarios: Tfrmcadfuncionarios
       CalColors.TextColor = clBackground
       CalColors.TitleBackColor = clOlive
       CalColors.TrailingTextColor = clSilver
-      Date = 39945.552191238430000000
+      Date = 39945.545423645830000000
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -8

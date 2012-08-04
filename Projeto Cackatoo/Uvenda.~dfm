@@ -1,6 +1,6 @@
 object frmvenda: Tfrmvenda
-  Left = 62
-  Top = 95
+  Left = 178
+  Top = 92
   Width = 990
   Height = 755
   Caption = 'Agropecu'#225'ria e Ferragem Lima Neves - Venda'

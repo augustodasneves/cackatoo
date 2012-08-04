@@ -119,7 +119,7 @@ begin
               TDBEdit(Components[i]).Enabled:=false;
      except
         dm.tbusuario.Cancel;
-        Application.MessageBox('Problemas ao cadastrar produto','Atenção',mb_ok);
+        Application.MessageBox('Problemas ao cadastrar Usuário','Atenção',mb_ok);
     for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
    if ((Components[i]is TDBedit)or(Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i] is TDBLookupComboBox)or(Components[i] is TDBCheckBox))then  //verifica se os componentes são dbedits
     TDBEdit(Components[i]).Enabled:=false;
@@ -147,7 +147,7 @@ begin
   edtlogin.SetFocus;
   tratabotao(2);
   except
-  Application.MessageBox('Problemas ao alterar produto','Atenção',mb_ok);
+  Application.MessageBox('Problemas ao alterar Usuário','Atenção',mb_ok);
   end;
 end;
 

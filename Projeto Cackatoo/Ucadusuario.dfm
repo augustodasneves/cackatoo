@@ -1,10 +1,10 @@
 object frmcadusuarios: Tfrmcadusuarios
-  Left = 224
-  Top = 132
+  Left = 2
+  Top = 1
   AutoSize = True
   BorderStyle = bsSingle
   Caption = 'Agropecu'#225'ria e Ferragem Lima Neves - Cadastro de usu'#225'rios'
-  ClientHeight = 697
+  ClientHeight = 674
   ClientWidth = 1001
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

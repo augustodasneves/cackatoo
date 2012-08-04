@@ -1,10 +1,10 @@
 object frmcadfornecedores: Tfrmcadfornecedores
   Left = 226
-  Top = 188
+  Top = 0
   AutoSize = True
   BorderStyle = bsSingle
   Caption = 'Agropecu'#225'ria e Ferragem Lima Neves - Cadastro de Fornecedores'
-  ClientHeight = 697
+  ClientHeight = 674
   ClientWidth = 1025
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -1566,8 +1566,8 @@ object frmcadfornecedores: Tfrmcadfornecedores
   end
   object ds_bairro: TDataSource
     DataSet = DM.tbbairro
-    Left = 408
-    Top = 256
+    Left = 512
+    Top = 264
   end
   object ds_fornecedor: TDataSource
     DataSet = DM.tbfornecedor
@@ -1576,7 +1576,7 @@ object frmcadfornecedores: Tfrmcadfornecedores
   end
   object ds_tipo_telefone: TDataSource
     DataSet = DM.tbtipo_telefone
-    Left = 536
-    Top = 240
+    Left = 512
+    Top = 184
   end
 end

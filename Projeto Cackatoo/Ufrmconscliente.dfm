@@ -1,8 +1,8 @@
 object frmconscliente: Tfrmconscliente
   Left = 211
-  Top = 156
+  Top = 0
   Width = 1026
-  Height = 761
+  Height = 708
   HorzScrollBar.Smooth = True
   AutoSize = True
   Caption = 'Agropecu'#225'ria e Ferragem Lima Neves - Consulta de Clientes'

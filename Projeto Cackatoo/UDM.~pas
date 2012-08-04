@@ -155,6 +155,7 @@ type
     tbrenda_mensalmes: TStringField;
     tbrenda_mensalvalor: TBCDField;
     tbrenda_mensalobservacoes: TStringField;
+    tbMarca: TADOTable;
   private
     { Private declarations }
   public

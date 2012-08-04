@@ -1,8 +1,8 @@
 object frmrelproduto: Tfrmrelproduto
-  Left = -10
-  Top = 239
-  Width = 1288
-  Height = 779
+  Left = 1
+  Top = 1
+  Width = 1278
+  Height = 664
   Caption = 'Relat'#243'rio de Produtos'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object frmrelproduto: Tfrmrelproduto
   TextHeight = 13
   object QuickRep1: TQuickRep
     Left = 208
-    Top = 8
+    Top = 0
     Width = 794
     Height = 1123
     Hint = 'Relat'#243'rio de Produtos'
@@ -117,7 +117,7 @@ object frmrelproduto: Tfrmrelproduto
       object QRSysData1: TQRSysData
         Left = 544
         Top = 0
-        Width = 31
+        Width = 43
         Height = 17
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -128,7 +128,7 @@ object frmrelproduto: Tfrmrelproduto
           44.979166666666670000
           1439.333333333333000000
           0.000000000000000000
-          82.020833333333330000)
+          113.770833333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -146,7 +146,7 @@ object frmrelproduto: Tfrmrelproduto
       object QRSysData2: TQRSysData
         Left = 552
         Top = 16
-        Width = 31
+        Width = 47
         Height = 17
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -156,8 +156,8 @@ object frmrelproduto: Tfrmrelproduto
         Size.Values = (
           44.979166666666670000
           1460.500000000000000000
-          42.333333333333330000
-          82.020833333333330000)
+          42.333333333333340000
+          124.354166666666700000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -216,7 +216,7 @@ object frmrelproduto: Tfrmrelproduto
         Size.Values = (
           44.979166666666670000
           1143.000000000000000000
-          42.333333333333330000
+          42.333333333333340000
           248.708333333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -250,7 +250,7 @@ object frmrelproduto: Tfrmrelproduto
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        66.145833333333330000
+        66.145833333333340000
         1899.708333333333000000)
       BandType = rbColumnHeader
       object QRLabel2: TQRLabel
@@ -267,7 +267,7 @@ object frmrelproduto: Tfrmrelproduto
           44.979166666666670000
           105.833333333333300000
           21.166666666666670000
-          216.958333333333300000)
+          216.958333333333400000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -327,7 +327,7 @@ object frmrelproduto: Tfrmrelproduto
         Frame.DrawRight = False
         Size.Values = (
           44.979166666666670000
-          719.666666666666700000
+          719.666666666666800000
           21.166666666666670000
           119.062500000000000000)
         Alignment = taLeftJustify
@@ -422,7 +422,7 @@ object frmrelproduto: Tfrmrelproduto
           44.979166666666670000
           1100.666666666667000000
           21.166666666666670000
-          232.833333333333300000)
+          232.833333333333400000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -484,7 +484,7 @@ object frmrelproduto: Tfrmrelproduto
           44.979166666666670000
           0.000000000000000000
           21.166666666666670000
-          89.958333333333330000)
+          89.958333333333320000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -629,9 +629,9 @@ object frmrelproduto: Tfrmrelproduto
         Frame.DrawRight = False
         Size.Values = (
           44.979166666666670000
-          973.666666666666700000
+          973.666666666666800000
           21.166666666666670000
-          58.208333333333330000)
+          58.208333333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -836,7 +836,7 @@ object frmrelproduto: Tfrmrelproduto
       object QRSysData4: TQRSysData
         Left = 128
         Top = 8
-        Width = 73
+        Width = 7
         Height = 17
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -847,7 +847,7 @@ object frmrelproduto: Tfrmrelproduto
           44.979166666666670000
           338.666666666666700000
           21.166666666666670000
-          193.145833333333300000)
+          18.520833333333330000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -876,7 +876,7 @@ object frmrelproduto: Tfrmrelproduto
           44.979166666666670000
           1651.000000000000000000
           21.166666666666670000
-          97.895833333333330000)
+          97.895833333333320000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -896,7 +896,7 @@ object frmrelproduto: Tfrmrelproduto
       object QRSysData3: TQRSysData
         Left = 672
         Top = 8
-        Width = 42
+        Width = 7
         Height = 17
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -907,7 +907,7 @@ object frmrelproduto: Tfrmrelproduto
           44.979166666666670000
           1778.000000000000000000
           21.166666666666670000
-          111.125000000000000000)
+          18.520833333333330000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1016,8 +1016,8 @@ object frmrelproduto: Tfrmrelproduto
         'r'
       'and produto.id_funcionario = funcionarios.id_funcionario and'
       'produto.id_categoria = categoria.id_categoria')
-    Left = 200
-    Top = 200
+    Left = 128
+    Top = 16
     object ADOQuery1id_produto: TAutoIncField
       FieldName = 'id_produto'
       ReadOnly = True
@@ -1087,8 +1087,8 @@ object frmrelproduto: Tfrmrelproduto
     Parameters = <>
     SQL.Strings = (
       'select sum(valor_venda) from produto')
-    Left = 80
-    Top = 376
+    Left = 128
+    Top = 48
     object ADOQuery2sumvalor_venda: TBCDField
       FieldName = 'sum(valor_venda)'
       ReadOnly = True

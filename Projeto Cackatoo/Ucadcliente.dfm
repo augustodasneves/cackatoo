@@ -1,6 +1,6 @@
 object frmcadcliente: Tfrmcadcliente
-  Left = 236
-  Top = 311
+  Left = 2
+  Top = 1
   AutoSize = True
   BorderStyle = bsSingle
   Caption = 'Ferragem e Agropecu'#225'rira Lima Neves - Cadastro de Clientes'
@@ -1550,7 +1550,7 @@ object frmcadcliente: Tfrmcadcliente
       Hint = 'Selecione o Prazo de Validade'
       HelpType = htKeyword
       CalColors.TitleBackColor = clOlive
-      Date = 40095.051609062500000000
+      Date = 40095.419134479170000000
       ParentShowHint = False
       ShowHint = True
       TabOrder = 13

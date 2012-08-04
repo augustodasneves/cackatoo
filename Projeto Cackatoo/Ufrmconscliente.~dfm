@@ -754,11 +754,13 @@ object frmconscliente: Tfrmconscliente
     Top = 136
     Width = 6
     Height = 20
+    Color = clRed
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -17
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ParentColor = False
     ParentFont = False
   end
   object DBGrid1: TDBGrid

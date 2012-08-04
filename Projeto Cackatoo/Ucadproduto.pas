@@ -339,9 +339,155 @@ end;
 procedure Tfrmcadproduto.btnSalvarClick(Sender: TObject);
   var
   i:integer;
-
+  funcionario:string;
+  nome_produto:string;
+  perecivel:boolean;
+  marca_produto:string;
+  prazo_validade:string;
+  valor_compra:string;
+  valor_venda:string;
+  unidade_medida:string;
+  quantidade:integer;
+  estoque_minimo:integer;
+  cor:string;
+  nome_fornecedor:string;
+  categoria:string;
+  observacao:string;
 begin
      try
+
+          funcionario:=cmb_funcionario.Text;
+          nome_produto:=edt_nome.Text;
+          perecivel:=chk_perecivel.Checked;
+          marca_produto:=edt_marca.Text;
+          prazo_validade:=edt_prazo_validade.Text;
+          valor_compra:=edt_valor_fornecedor.Text;
+          valor_venda:=edt_valor_venda.Text;
+          unidade_medida:=cmb_unidade_medida.Text;
+          if(edt_qtd.Text<>'')then
+          begin
+            quantidade:=StrToInt(edt_qtd.Text);
+          end
+          else
+          begin
+            edt_qtd.Text:='0';
+            quantidade:=StrToInt(edt_qtd.Text);
+          end;
+
+          if(edt_estoque_minimo.Text<>'')then
+          begin
+            estoque_minimo:=StrToInt(edt_estoque_minimo.Text);
+          end
+          else
+          begin
+            edt_estoque_minimo.Text:='0';
+            estoque_minimo:=StrToInt(edt_estoque_minimo.Text);
+          end;
+
+          cor:=edt_cor.Text;
+          nome_fornecedor:=cmb_fornecedor.Text;
+          categoria:=cmb_categoria.Text;
+          observacao:=edt_observacao.Text;
+
+          if(funcionario ='')then
+          begin
+            if (Application.MessageBox('Informe o nome do funcionário por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+            begin
+              cmb_funcionario.SetFocus;
+              DBGrid1.Enabled:=false;
+            end;
+          end
+          else if(nome_produto='')then
+          begin
+            if (Application.MessageBox('Informe o nome do produto por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+            begin
+              edt_nome.SetFocus;
+              DBGrid1.Enabled:=false;
+            end;
+          end
+          else if(marca_produto='')then
+          begin
+            if (Application.MessageBox('Informe a marca do produto por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+            begin
+              edt_marca.SetFocus;
+              DBGrid1.Enabled:=false;
+            end;
+          end
+          else if(prazo_validade='')then
+          begin
+            if (Application.MessageBox('Informe o prazo de validade do produto por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+            begin
+              edt_prazo_validade.SetFocus;
+              DBGrid1.Enabled:=false;
+            end;
+          end
+          else if(valor_compra='')then
+          begin
+            if (Application.MessageBox('Informe o valor de compra do produto por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+            begin
+              edt_valor_fornecedor.SetFocus;
+              DBGrid1.Enabled:=false;
+            end;
+          end
+          else if(valor_venda='')then
+          begin
+            if (Application.MessageBox('Informe o valor de venda do produto por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+            begin
+              edt_valor_venda.SetFocus;
+              DBGrid1.Enabled:=false;
+            end;
+          end
+          else if(unidade_medida='')then
+          begin
+            if (Application.MessageBox('Informe a unidade de medida do produto por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+            begin
+              cmb_unidade_medida.SetFocus;
+              DBGrid1.Enabled:=false;
+            end;
+          end
+          else if(quantidade=0)then
+          begin
+            if (Application.MessageBox('Informe a quantidade de entrada por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+            begin
+              edt_qtd.SetFocus;
+              DBGrid1.Enabled:=false;
+            end;
+          end
+          else if(estoque_minimo=0)then
+          begin
+            if (Application.MessageBox('Informe a quantidade mínima do produto em estoque por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+            begin
+              edt_estoque_minimo.SetFocus;
+              DBGrid1.Enabled:=false;
+            end;
+          end
+          else if(cor='')then
+          begin
+            edt_cor.Text:='-';
+          end
+          else if(nome_fornecedor='')then
+          begin
+            if (Application.MessageBox('Informe o fornecedor do produto por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+            begin
+              cmb_fornecedor.SetFocus;
+              DBGrid1.Enabled:=false;
+            end;
+          end
+          else if(categoria='')then
+          begin
+            if (Application.MessageBox('Informe a categoria do produto por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+            begin
+              cmb_categoria.SetFocus;
+              DBGrid1.Enabled:=false;
+            end;
+          end
+          else if(observacao='')then
+          begin
+            edt_observacao.Text:=' ';
+          end
+          else
+          begin
+
       DBGrid1.Enabled:=true;
       dm.tbproduto.Post;
       application.MessageBox('Cadastro efetuado com sucesso!','Concluído',mb_ok);
@@ -349,22 +495,26 @@ begin
         for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
           if ((Components[i]is TDBedit)or (Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i]is TDBRadioGroup)or(Components[i]is TDBCheckBox)or(Components[i]is TDBMemo)or(Components[i] is TDBLookupComboBox))then  //verifica se os componentes são dbedits
             TDBEdit(Components[i]).Enabled:=false;
+           end;
       except
       Application.MessageBox('Problemas ao cadastrar!','Atenção',mb_ok);
       dm.tbproduto.Cancel;
       for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
-   if ((Components[i]is TDBedit)or (Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i]is TDBRadioGroup)or(Components[i]is TDBCheckBox)or(Components[i]is TDBMemo)or(Components[i] is TDBLookupComboBox))then  //verifica se os componentes são dbedits
-    TDBEdit(Components[i]).Enabled:=false;
-   if dm.tbproduto.RecordCount >0 then
-    begin
-      tratabotao(3);
-    end
-   else
-    begin
+        if ((Components[i]is TDBedit)or (Components[i] is TSpeedButton)or(Components[i] is TDBComboBox)or(Components[i]is TDBRadioGroup)or(Components[i]is TDBCheckBox)or(Components[i]is TDBMemo)or(Components[i] is TDBLookupComboBox))then  //verifica se os componentes são dbedits
+          TDBEdit(Components[i]).Enabled:=false;
+     if dm.tbproduto.RecordCount >0 then
+     begin
+        tratabotao(3);
+     end
+     else
+     begin
       tratabotao(1);
-    end;
-   end;
+     end;
+     end;
 end;
+
+
+
 
 procedure Tfrmcadproduto.btnAlterarClick(Sender: TObject);
 var
@@ -396,7 +546,7 @@ begin
   end
   else
     begin
-      Application.MessageBox('Você não tem nenhum registro de funcionários','Atenção',MB_OK+MB_ICONEXCLAMATION);
+      Application.MessageBox('Você não tem nenhum registro de Produtos','Atenção',MB_OK+MB_ICONEXCLAMATION);
       for i:=0 to componentcount-1 do //passa pelos componentes verificando pelos números
         if ((Components[i]is Tdbedit)or (Components[i] is TSpeedButton)or (Components[i] is Tdbradiogroup)or(Components[i] is TDBComboBox))then  //verifica se os componentes são dbedits
       TDBEdit(Components[i]).Enabled:=false;  //caso seja um dbedit, ele deshabilita

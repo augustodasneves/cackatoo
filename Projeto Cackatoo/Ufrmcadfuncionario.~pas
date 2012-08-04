@@ -110,7 +110,7 @@ var
 implementation
 
 uses UDM, Ucadastro_funcionario, Uconsultafunc,Ucadusuario,Ucaixa,
-  Ucad_tipo_tel, Ucadproduto;
+  Ucad_tipo_tel, Ucadproduto, Ucadretirada;
 
 {$R *.dfm}
 
@@ -207,13 +207,24 @@ var
   telefone:string;
   data:string;
   tipo_telefone:string;
+  sexo:String;
 begin
   DBGrid1.Enabled:=true;
   nome:=edtnome.text;
   telefone:=edttelefone.Text;
   data:=edt_data_admissao.Text;
   tipo_telefone:=cmb_tipo_telefone.Text;
-    if(nome='')then
+  sexo:=rgp_sexo.Value;
+
+    if(sexo='')then
+      begin
+        if(Application.MessageBox('Informe o sexo do Funcionário','Atenção',MB_OK+MB_ICONERROR)=1) then
+          begin
+            rgp_sexo.SetFocus;
+            dbgrid1.Enabled:=false;
+          end;
+      end
+    else if(nome='')then
       begin
         if(Application.MessageBox('Informe o nome do Funcionário','Atenção',MB_OK+MB_ICONERROR)=1) then
           begin

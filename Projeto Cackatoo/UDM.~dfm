@@ -1,7 +1,7 @@
 object DM: TDM
   OldCreateOrder = False
-  Left = 349
-  Top = 238
+  Left = 182
+  Top = 17
   Height = 438
   Width = 549
   object dbconexao: TADOConnection
@@ -485,6 +485,7 @@ object DM: TDM
     end
   end
   object tbtipo_telefone: TADOTable
+    Active = True
     Connection = dbconexao
     CursorType = ctStatic
     TableName = 'tipo_telefone'
@@ -665,5 +666,13 @@ object DM: TDM
       FieldName = 'observacao'
       Size = 120
     end
+  end
+  object tbMarca: TADOTable
+    Active = True
+    Connection = dbconexao
+    CursorType = ctStatic
+    TableName = 'marca'
+    Left = 40
+    Top = 240
   end
 end

@@ -177,6 +177,8 @@ var
   bairro:string;
   num:string;
   rg:string;
+  data_nasc:string;
+  tipo_telefone:string;
 begin
   nome:=edtnome.text;
   rg:=edtrg.Text;
@@ -184,6 +186,8 @@ begin
   endereco:=edtendereco.text;
   num:=edtnumero.Text;
   bairro:=cmb_bairro.Text;
+  data_nasc:=edt_data_nascimento.Text;
+  tipo_telefone:=cmb_tipo_tel.Text;
   if(nome ='')then
       begin
         if (Application.MessageBox('Informe o nome do cliente por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
@@ -200,11 +204,35 @@ begin
             DBGrid1.Enabled:=false;
           end
       end
+   else if(data_nasc='')then
+      begin
+        if (Application.MessageBox('Informe a Data de Nascimento do Cliente por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+          begin
+            edt_data_nascimento.SetFocus;
+            DBGrid1.Enabled:=false;
+          end
+      end
+   else if(edtddd.Text='')then
+      begin
+        if (Application.MessageBox('Informe o ddd do telefone do cliente por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+          begin
+            edtddd.SetFocus;
+            dbgrid1.Enabled:=false;
+          end;
+      end
     else if(telefone='')then
       begin
         if (Application.MessageBox('Informe o telefone do cliente por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
           begin
             edttelefone.SetFocus;
+            dbgrid1.Enabled:=false;
+          end;
+      end
+    else if(tipo_telefone='')then
+      begin
+        if (Application.MessageBox('Informe o tipo de telefone do cliente por Favor','Atenção',mb_ok+MB_ICONERROR)=1) then
+          begin
+            cmb_tipo_tel.SetFocus;
             dbgrid1.Enabled:=false;
           end;
       end
@@ -356,7 +384,7 @@ end;
 
 procedure Tfrmcadcliente.btnexcluirClick(Sender: TObject);
 begin
-  if (application.MessageBox('Você tem certeza que deseja excluir este cliente?','Atenção',mb_Iconquestion+Mb_yesno)=idyes)then
+  if (application.MessageBox('Você tem certeza que deseja excluir o cliente'+'?','Atenção',mb_Iconquestion+Mb_yesno)=idyes)then
     begin
     try
       dm.tbcliente.Delete;

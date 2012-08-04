@@ -124,7 +124,6 @@ type
     { Public declarations }
     procedure WM_Move(var msg: TWMMove);
     message WM_MOVE;
-    procedure AjustaFormulario(Formulario:TForm; Const Tamanho:integer = 800);
     procedure StartWithWin(const Astart:Boolean=True);
 
 
@@ -237,14 +236,14 @@ end;
 
 procedure Tfrmprincipal.WM_Move(var msg: TWMMove);
 begin
-   if Left < 0 then
+   {if Left < 0 then
     left:=0;
    if top < 0then
     top:=0;
    if screen.Width-(left+width)< 0 then
     left:=screen.Width - width;
    if screen.Height-(top+height) <0 then
-    top:=screen.Height-Height;
+    top:=screen.Height-Height;}
 end;
 
 procedure Tfrmprincipal.btnsairClick(Sender: TObject);
@@ -399,29 +398,6 @@ begin
   Application.CreateForm(Tfrmrelproduto, frmrelproduto);
 end;
 
-procedure Tfrmprincipal.AjustaFormulario(Formulario: TForm;
-  const Tamanho: integer);
-var
-Escala : Double;
-Porc : integer;//Vai dar o percentual inteiro
-begin
-with Formulario do
-begin
-if Tamanho <> Screen.Width then
-begin
-//Recebendo o percentual de escalar
-Escala:=((Screen.Width-Tamanho)/Tamanho);
-//Recebendo o percentual de escalar em inteiro
-Porc:=Round((Escala*100)+100);
-Self.Width:=Round(Self.Width*(Escala+1));
-Self.height:=Round((Self.height*(Escala+1)));
-//Realizando o ajuste do form
-Self.changeScale(Porc,100);
-end;
-end;
-
-end;
-
 procedure Tfrmprincipal.Clientes3Click(Sender: TObject);
 begin
   Application.CreateForm(Tfrmrelclientes,frmrelclientes);
@@ -441,6 +417,7 @@ procedure Tfrmprincipal.FormShow(Sender: TObject);
 var
   usu:string;
   i:integer;
+  r:TRect;
 begin
   i:=1;
   while(i=1)do
@@ -452,6 +429,9 @@ begin
         end;
       i:=i+1;
     end;
+    SystemParametersInfo(SPI_GETWORKAREA, 0, @r,0) ;
+    SetBounds(r.Left, r.Top, r.Right-r.Left, r.Bottom-r.Top) ;
+
 calendario.Date:=Date;
 end;
 

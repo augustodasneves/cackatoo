@@ -1,13 +1,13 @@
 object frmprincipal: Tfrmprincipal
-  Left = 278
-  Top = 120
+  Left = 2
+  Top = 1
   Cursor = crArrow
   Hint = 'Projeto Cackatoo - Formul'#225'rio Principal'
   AutoSize = True
-  BorderStyle = bsSingle
+  BorderStyle = bsNone
   Caption = 'Ferragem e Agropecu'#225'ria Lima Neves - Formul'#225'rio Principal '
-  ClientHeight = 654
-  ClientWidth = 1136
+  ClientHeight = 438
+  ClientWidth = 644
   Color = cl3DLight
   DefaultMonitor = dmMainForm
   DockSite = True
@@ -78,8 +78,8 @@ object frmprincipal: Tfrmprincipal
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 632
-    Width = 1136
+    Top = 416
+    Width = 644
     Height = 22
     Panels = <
       item
@@ -120,7 +120,7 @@ object frmprincipal: Tfrmprincipal
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
-    Width = 1136
+    Width = 644
     Height = 81
     Cursor = crHandPoint
     ButtonHeight = 37
@@ -175,30 +175,31 @@ object frmprincipal: Tfrmprincipal
       DragCursor = crHandPoint
       ImageIndex = 4
       ParentShowHint = False
+      Wrap = True
       ShowHint = True
       OnClick = btnfuncionariosClick
     end
     object cadcliente: TToolButton
-      Left = 500
-      Top = 2
+      Left = 0
+      Top = 39
       Hint = 'Cadastro de Clientes'
       Caption = 'Clientes'
+      ImageIndex = 5
       ParentShowHint = False
       ShowHint = True
       OnClick = cadclienteClick
     end
     object ToolButton1: TToolButton
-      Left = 625
-      Top = 2
+      Left = 125
+      Top = 39
       Hint = 'Cadastro de usu'#225'rios'
       Caption = 'Usu'#225'rios'
       ParentShowHint = False
-      Wrap = True
       ShowHint = True
       OnClick = ToolButton1Click
     end
     object btncalculadora: TToolButton
-      Left = 0
+      Left = 250
       Top = 39
       Hint = 'Abrir Calculadora'
       Caption = 'Calculadora'
@@ -209,19 +210,20 @@ object frmprincipal: Tfrmprincipal
       OnClick = btncalculadoraClick
     end
     object btncd: TToolButton
-      Left = 125
+      Left = 375
       Top = 39
       Hint = 'Abrir Bandeja de CD'
       Caption = 'Abrir Bandeja do Cd'
       DragCursor = crHandPoint
       ImageIndex = 1
       ParentShowHint = False
+      Wrap = True
       ShowHint = True
       OnClick = btncdClick
     end
     object btnfechacd: TToolButton
-      Left = 250
-      Top = 39
+      Left = 0
+      Top = 76
       Hint = 'Fechar Bandeja do CD'
       Caption = 'Fechar Bandeja do CD'
       ImageIndex = 1
@@ -231,8 +233,8 @@ object frmprincipal: Tfrmprincipal
       OnClick = btnfechacdClick
     end
     object btnsair: TToolButton
-      Left = 375
-      Top = 39
+      Left = 125
+      Top = 76
       Hint = 'Desligar o Computador'
       Caption = 'Desligar PC'
       ImageIndex = 0
@@ -241,8 +243,8 @@ object frmprincipal: Tfrmprincipal
       OnClick = btnsairClick
     end
     object ToolButton2: TToolButton
-      Left = 500
-      Top = 39
+      Left = 250
+      Top = 76
       Hint = 'Sair'
       Caption = 'Sair'
       ParentShowHint = False
@@ -257,7 +259,7 @@ object frmprincipal: Tfrmprincipal
     Height = 163
     Hint = 'Calend'#225'rio Principal'
     CalColors.TitleBackColor = clAppWorkSpace
-    Date = 40208.310852256950000000
+    Date = 40208.508276145830000000
     TabOrder = 2
     WeekNumbers = True
   end

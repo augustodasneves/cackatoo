@@ -228,6 +228,9 @@ var
   cnpj:string;
   num:string;
   fax:string;
+  tipo_telefone:string;
+  razao_social:string;
+  num_inscricao:string;
 begin
   DBGrid1.Enabled:=true;
   nome:=edtnome.Text;
@@ -235,16 +238,36 @@ begin
   email:=edtemail.Text;
   endereco:=edtendereco.Text;
   bairro:=cmb_bairro.Text;
+  tipo_telefone:=cmb_tipo_telefone.Text;
   cnpj:=edtcnpj.Text;
   num:=edtnumero.Text;
   fax:=edtfax.Text;
+  num_inscricao:=edt_inscricao.Text;
+  razao_social:=edt_razao_social.Text;
   if(nome='')then
       begin
-        if(Application.MessageBox('Informe o Nome do Fornecedor!','Atenção',MB_OK+MB_ICONERROR)=1)then
+        if(Application.MessageBox('Informe o Nome do Fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
           begin
+            edtnome.setfocus;
             DBGrid1.Enabled:=false;
           end;
       end
+  else if(razao_social='')then
+       begin
+         if(Application.MessageBox('Informe a Razão Social do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
+           begin
+             edt_razao_social.setfocus;
+             DBGrid1.Enabled:=false;
+           end;
+       end
+  else if(num_inscricao='')then
+       begin
+         if(Application.MessageBox('Informe o Numero de Inscricao do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
+           begin
+             edtcnpj.setfocus;
+             DBGrid1.Enabled:=false;
+           end;
+       end
    else if(cnpj='')then
        begin
          if(Application.MessageBox('Informe o cnpj do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
@@ -261,14 +284,14 @@ begin
             DBGrid1.Enabled:=false;
           end;
         end
-     else if(email='')then
-       begin
-         if(Application.MessageBox('Informe o email do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
-           begin
-             edtemail.setfocus;
-             DBGrid1.Enabled:=false;
-           end;
-       end
+      else if(tipo_telefone='')then
+      begin
+        if(Application.MessageBox('Informe o tipo de telefone do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
+          begin
+            cmb_tipo_telefone.setfocus;
+            DBGrid1.Enabled:=false;
+          end;
+        end
       else if(endereco='')then
        begin
          if(Application.MessageBox('Informe o endereço do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
@@ -285,7 +308,10 @@ begin
              DBGrid1.Enabled:=false;
            end;
        end
-
+       else if(email='')then
+       begin
+          edtemail.Text:='-';
+       end
         else if(bairro='')then
        begin
          if(Application.MessageBox('Informe o bairro do fornecedor','Atenção',MB_OK+MB_ICONERROR)=1)then
@@ -305,6 +331,7 @@ begin
     else
       begin
    try
+    edttelefone.Text:=edtddd.Text+edttelefone.Text;
     dm.tbfornecedor.Post;
     application.MessageBox('Cadastro efetuado com sucesso!','Concluído',mb_ok);
     tratabotao(3);

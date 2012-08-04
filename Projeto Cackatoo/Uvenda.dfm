@@ -1,8 +1,8 @@
 object frmvenda: Tfrmvenda
   Left = 178
-  Top = 92
+  Top = 0
   Width = 990
-  Height = 755
+  Height = 666
   Caption = 'Agropecu'#225'ria e Ferragem Lima Neves - Venda'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -1006,8 +1006,8 @@ object frmvenda: Tfrmvenda
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 705
-    Width = 982
+    Top = 668
+    Width = 965
     Height = 22
     Panels = <
       item
